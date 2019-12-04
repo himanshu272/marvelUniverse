@@ -6,7 +6,7 @@ const CharacterModal=(props)=>
 {
 
     console.log(props);
-    const { comics, events, series, stories, urls }=props.characterDetails;
+    const { comics, events, series, stories, thumbnail, urls }=props.characterDetails;
     console.log(comics)
     const comicsView=comics.items.map((item, i)=>
     {
@@ -70,6 +70,7 @@ const CharacterModal=(props)=>
         <React.Fragment>
             <Modal show={props.show} onHide={props.handleClose} size="lg">
                 <Modal.Header closeButton>
+                    <Image src={ thumbnail.path+"/standard_fantastic."+ thumbnail.extension} roundedCircle width={80} height={80} />
                 <Modal.Title>Character Details</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
