@@ -3,10 +3,15 @@ import React, {useEffect, useState} from 'react';
 import {Card, Container, FormControl, InputGroup, Row} from 'react-bootstrap';
 import './App.css';
 import Pagination from "./components/Pagination";
+import { CharacterModal } from './components/CharacterModal'
 import {withCharacters} from "./context/CharacterContext";
+import { getDetails } from './utils/getCharacterDetails'
+
 
 const App = ({isLoading, characters, characterPages, fetchCharactersByNamePaginated, fetchCharactersPaginated}) => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [show, setShow] = useState(false);
+  const [characterDetails, setCharacterDetails]=useState();
 
   useEffect(() => {
     fetchCharactersPaginated(1);
@@ -39,7 +44,24 @@ const App = ({isLoading, characters, characterPages, fetchCharactersByNamePagina
     }
   };
 
+  const doAlert=(id)=>
+  {
+    getDetails(id)
+    .then((res)=>
+    {
+      setShow(true);
+      console.log(res);
+      setCharacterDetails(res);
+    })
+  }
+
+  const handleClose=()=>
+  {
+    setShow(false);
+  }
+
   return (
+    <>
     <div className="main">
       <Container>
         <Row className="row justify-content-center">
@@ -66,6 +88,7 @@ const App = ({isLoading, characters, characterPages, fetchCharactersByNamePagina
               <Card.Img variant="top"
                         src={character.thumbnail.path + "/standard_fantastic." + character.thumbnail.extension}
                         alt="Character"
+                        onClick={()=>{ doAlert(character.id) }}
               />
               <Card.Body>
                 <Card.Title>{character.name}</Card.Title>
@@ -81,6 +104,12 @@ const App = ({isLoading, characters, characterPages, fetchCharactersByNamePagina
         </div>
       </Container>
     </div>
+    { characterDetails ? <CharacterModal 
+        handleClose={handleClose} 
+        show={show}
+        characterDetails={characterDetails}
+        /> : null }
+    </>
   )
 };
 
