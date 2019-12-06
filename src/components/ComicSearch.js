@@ -5,13 +5,13 @@ class MovieSearch extends Component {
     super(props);
 
     this.state = {
-      movieName: null
+      comicName: null
     };
   }
 
-  updateMovieName = name => {
+  updateComicName = name => {
     this.setState({
-      movieName: name
+      comicName: name
     });
   };
 
